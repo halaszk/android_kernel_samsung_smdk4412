@@ -423,7 +423,7 @@ void sg_miter_stop(struct sg_mapping_iter *miter)
 			flush_kernel_dcache_page(miter->page);
 
 		if (miter->__flags & SG_MITER_ATOMIC) {
-			WARN_ON(!irqs_disabled());
+			WARN_ON_ONCE(preemptible());
 			kunmap_atomic(miter->addr, KM_BIO_SRC_IRQ);
 		} else
 			kunmap(miter->page);
