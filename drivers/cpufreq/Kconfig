@@ -320,6 +320,12 @@ config CPU_FREQ_GOV_LULZACTIVEQ
         help
           'lulzactiveq' - hotplug mechanism added in lulzactive
 
+config CPU_FREQ_GOV_HYDRXQ
+        tristate "'hydrxq' cpufreq governor"
+        depends on CPU_FREQ
+        help
+          'hydrxq' - hotplug mechanism added in lulzactive
+
 config CPU_FREQ_DVFS_MONITOR
 	bool "dvfs monitor"
 	depends on CPU_FREQ

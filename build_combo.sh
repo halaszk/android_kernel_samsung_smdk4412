@@ -39,9 +39,9 @@ if [ "$(whoami)" == "dominik" ]; then
 	#TOOLCHAIN_PATH="/home/dominik/android/android_4.2/prebuilt/linux-x86/toolchain/android-linaro-toolchain-4.8/bin"
 	TOOLCHAIN_PATH="/home/dominik/android/android_4.2/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7.2/bin"
 elif [ "$(whoami)" == "rollus" ]; then
-	TOOLCHAIN_PATH="/home/rollus/android-toolchain-eabi/bin/"
+	TOOLCHAIN_PATH=""
 fi
-TOOLCHAIN="$TOOLCHAIN_PATH/arm-eabi-"
+TOOLCHAIN="$KERNEL_PATH/android-toolchain/bin/arm-eabi-"
 ROOTFS_PATH="$KERNEL_PATH/ramdisks/$TARGET-combo"
 
 defconfig=combo_"$TARGET"_defconfig
