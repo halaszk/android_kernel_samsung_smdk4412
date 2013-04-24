@@ -3746,7 +3746,6 @@ static void __init exynos4_reserve(void)
 	ret = dma_declare_contiguous(&s5p_device_mfc.dev,
 			0x02800000, 0x51000000, 0);
 #endif
-#endif
 
 	if (ret != 0)
 		printk(KERN_ERR "%s Fail\n", __func__);
