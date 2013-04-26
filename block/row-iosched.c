@@ -81,9 +81,9 @@ static const struct row_queue_params row_queues_def[] = {
 	{false, 1, false}	/* ROWQ_PRIO_LOW_SWRITE */
 };
 
-/* Default values for idling on read queues */
-#define ROW_IDLE_TIME_MSEC 5	/* msec */
-#define ROW_READ_FREQ_MSEC 20	/* msec */
+/* Default values for idling on read queues (in msec) */
+#define ROW_IDLE_TIME_MSEC 5
+#define ROW_READ_FREQ_MSEC 20
 
 /**
  * struct rowq_idling_data -  parameters for idling on the queue
@@ -342,11 +342,10 @@ static int row_reinsert_req(struct request_queue *q,
 	return 0;
 }
 
-/*
+/**
  * row_urgent_pending() - Return TRUE if there is an urgent
  *			  request on scheduler
  * @q:	requests queue
- *
  */
 static bool row_urgent_pending(struct request_queue *q)
 {
