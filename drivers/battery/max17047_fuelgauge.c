@@ -63,7 +63,7 @@
 
 /* Polling work */
 #undef	DEBUG_FUELGAUGE_POLLING
-#define MAX17047_POLLING_INTERVAL	10000
+#define MAX17047_POLLING_INTERVAL	20000
 
 /* rcomp update */
 #if defined(CONFIG_MACH_C1_KOR_SKT) || \
