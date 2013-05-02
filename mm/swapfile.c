@@ -2145,14 +2145,14 @@ int swapon(char *name, int swap_flags)
 	if (swap_flags & SWAP_FLAG_PREFER)
 		prio =
 		    (swap_flags & SWAP_FLAG_PRIO_MASK) >> SWAP_FLAG_PRIO_SHIFT;
-	enable_swap_info(p, prio, swap_map);
+	enable_swap_info(p, prio, swap_map, frontswap_map);
 
 	printk(KERN_INFO "Adding %uk swap on %s.  "
-	       "Priority:%d extents:%d across:%lluk %s%s\n",
+	       "Priority:%d extents:%d across:%lluk %s%s\n", 
 	       p->pages << (PAGE_SHIFT - 10), name, p->prio,
 	       nr_extents, (unsigned long long)span << (PAGE_SHIFT - 10),
 	       (p->flags & SWP_SOLIDSTATE) ? "SS" : "",
-	       (p->flags & SWP_DISCARDABLE) ? "D" : "");
+		(p->flags & SWP_DISCARDABLE) ? "D" : "");
 
 	mutex_unlock(&swapon_mutex);
 	atomic_inc(&proc_poll_event);
@@ -2208,6 +2208,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
 	int nr_extents;
 	sector_t span;
 	unsigned long maxpages;
+	unsigned long *frontswap_map = NULL; 
 	unsigned char *swap_map = NULL;
 	struct page *page = NULL;
 	struct inode *inode = NULL;
