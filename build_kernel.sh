@@ -117,6 +117,15 @@ find | fakeroot cpio -H newc -o > $INITRAMFS_TMP.cpio 2>/dev/null
 ls -lh $INITRAMFS_TMP.cpio
 gzip -9 $INITRAMFS_TMP.cpio
 cd -
+
+GETVER=`grep 'Devil-.*-V' .config | sed 's/.*".//g' | sed 's/-S.*//g'`
+read -p "create new kernel Image LOGO with version & date (y/n)?";
+if [ "$REPLY" == "y" ]; then
+# create new image with version & date
+convert -ordered-dither threshold,32,64,32 -pointsize 17 -fill white -draw "text 230,1080 \"${GETVER} [$(date "+%H:%M | %d.%m.%Y"| sed -e ' s/\"/\\\"/g' )]\"" ${INITRAMFS_TMP}/res/images/icon_clockwork.png ${INITRAMFS_TMP}/res/images/icon_clockwork.png;
+optipng -o7 ${INITRAMFS_TMP}/res/images/icon_clockwork.png;
+fi;
+# make kernel
 nice -n 10 make -j4 zImage || exit 1
 
 ./mkbootimg --kernel ${KERNELDIR}/arch/arm/boot/zImage --ramdisk $INITRAMFS_TMP.cpio.gz --board smdk4x12 --base 0x10000000 --pagesize 2048 --ramdiskaddr 0x11000000 -o ${KERNELDIR}/boot.img.pre
@@ -132,7 +141,6 @@ rm ${KERNELDIR}/READY/Kernel_*
 stat ${KERNELDIR}/boot.img
 cp ${KERNELDIR}/boot.img /${KERNELDIR}/READY/boot/
 cd ${KERNELDIR}/READY/
-GETVER=`grep 'Devil-.*-V' .config | sed 's/.*".//g' | sed 's/-S.*//g'`
         zip -r Kernel_${GETVER}-`date +"[%H-%M]-[%d-%m]-JB-SGSIII-PWR-CORE"`.zip .
 rm ${KERNELDIR}/boot.img
 rm ${KERNELDIR}/READY/boot/boot.img
