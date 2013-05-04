@@ -59,6 +59,8 @@ fi;
 . ${KERNELDIR}/.config
 
 cd ${KERNELDIR}/
+
+GETVER=`grep 'Devil-.*-V' .config | sed 's/.*".//g' | sed 's/-S.*//g'`
 nice -n 10 make -j2 || exit 1
 
 # remove previous zImage files
@@ -112,19 +114,20 @@ find -name '*.ko' -exec cp -av {} $INITRAMFS_TMP/lib/modules/ \;
 ${CROSS_COMPILE}strip --strip-debug $INITRAMFS_TMP/lib/modules/*.ko
 chmod 755 $INITRAMFS_TMP/lib/modules/*
 ${CROSS_COMPILE}strip --strip-unneeded $INITRAMFS_TMP/lib/modules/*
-cd $INITRAMFS_TMP
-find | fakeroot cpio -H newc -o > $INITRAMFS_TMP.cpio 2>/dev/null
-ls -lh $INITRAMFS_TMP.cpio
-gzip -9 $INITRAMFS_TMP.cpio
-cd -
-
-GETVER=`grep 'Devil-.*-V' .config | sed 's/.*".//g' | sed 's/-S.*//g'`
+rm -f ${INITRAMFS_TMP}/update*;
 read -p "create new kernel Image LOGO with version & date (y/n)?";
 if [ "$REPLY" == "y" ]; then
 # create new image with version & date
 convert -ordered-dither threshold,32,64,32 -pointsize 17 -fill white -draw "text 230,1080 \"${GETVER} [$(date "+%H:%M | %d.%m.%Y"| sed -e ' s/\"/\\\"/g' )]\"" ${INITRAMFS_TMP}/res/images/icon_clockwork.png ${INITRAMFS_TMP}/res/images/icon_clockwork.png;
 optipng -o7 ${INITRAMFS_TMP}/res/images/icon_clockwork.png;
 fi;
+
+cd $INITRAMFS_TMP
+find | fakeroot cpio -H newc -o > $INITRAMFS_TMP.cpio 2>/dev/null
+ls -lh $INITRAMFS_TMP.cpio
+gzip -9 $INITRAMFS_TMP.cpio
+cd -
+
 # make kernel
 nice -n 10 make -j4 zImage || exit 1
 
