@@ -26,8 +26,9 @@
 #include <linux/slab.h>
 #include <linux/time.h>
 #include "logger.h"
+#ifdef CONFIG_ANDROID_LOGGER_INTERFACE
 #include "logger_interface.h"
-
+#endif
 #include <asm/ioctls.h>
 
 /*
@@ -396,13 +397,13 @@ static void fix_up_readers(struct logger_log *log, size_t len)
 static void do_write_log(struct logger_log *log, const void *buf, size_t count)
 {
 	size_t len;
-
+#ifdef CONFIG_ANDROID_LOGGER_INTERFACE
 	// if logger mode is disabled, terminate instantly
 	if (logger_mode == 0)
 	{
 			return;
 	} 
-
+#endif
 	len = min(count, log->size - log->w_off);
 	memcpy(log->buffer + log->w_off, buf, len);
 
@@ -425,13 +426,13 @@ static ssize_t do_write_log_from_user(struct logger_log *log,
 				      const void __user *buf, size_t count)
 {
 	size_t len;
-
+#ifdef CONFIG_ANDROID_LOGGER_INTERFACE
 	// if logger mode is disabled, terminate instantly
 	if (logger_mode == 0)
 	{
 			return;
 	} 	
-
+#endif
 len = min(count, log->size - log->w_off);
 	if (len && copy_from_user(log->buffer + log->w_off, buf, len))
 		return -EFAULT;
