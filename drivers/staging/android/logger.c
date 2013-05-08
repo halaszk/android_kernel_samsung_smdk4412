@@ -430,7 +430,7 @@ static ssize_t do_write_log_from_user(struct logger_log *log,
 	// if logger mode is disabled, terminate instantly
 	if (logger_mode == 0)
 	{
-			return;
+			return (0);
 	} 	
 #endif
 len = min(count, log->size - log->w_off);
