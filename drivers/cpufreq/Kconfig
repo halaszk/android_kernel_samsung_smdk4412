@@ -148,6 +148,10 @@ config CPU_FREQ_DEFAULT_GOV_LULZACTIVEQ
 	bool "lulzactiveq"
 	select CPU_FREQ_GOV_LULZACTIVEQ
 
+config CPU_FREQ_DEFAULT_GOV_DEVILQ
+	bool "devilq"
+	select CPU_FREQ_GOV_DEVILQ
+
 config CPU_FREQ_DEFAULT_GOV_ZZMOOVE
     bool "zzmoove"
     select CPU_FREQ_GOV_ZZMOOVE
@@ -336,6 +340,13 @@ config CPU_FREQ_GOV_LULZACTIVEQ
         depends on CPU_FREQ
         help
           'lulzactiveq' - hotplug mechanism added in lulzactive
+
+config CPU_FREQ_GOV_DEVILQ
+        tristate "'devilq' cpufreq governor"
+        depends on CPU_FREQ
+	default y
+        help
+          'devilq' - based off lulzactiveq and zzmoove
 
 config CPU_FREQ_GOV_HYDRXQ
         tristate "'hydrxq' cpufreq governor"
