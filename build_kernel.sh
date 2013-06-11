@@ -10,6 +10,14 @@ echo "example: build_kernel.sh n7100"
 exit 1
 fi
 
+if [ "$TARGET" = "i9300" ] ; then
+CUSTOM_PATH=i9300
+MODE=COMBO
+else
+CUSTOM_PATH=note
+MODE=DUAL
+fi
+
 # location
 export KERNELDIR=`readlink -f .`
 export PARENT_DIR=`readlink -f ..`
@@ -154,20 +162,20 @@ rm -f ${KERNELDIR}/boot.img.pre
 if [ "$TARGET" = "i9300" ] ; then
 	# copy all needed to ready kernel folder.
 cp ${KERNELDIR}/.config ${KERNELDIR}/arch/arm/configs/${KERNEL_CONFIG}
-cp ${KERNELDIR}/.config ${KERNELDIR}/READY/
-rm ${KERNELDIR}/READY/boot/zImage
-rm ${KERNELDIR}/READY/Kernel_*
+cp ${KERNELDIR}/.config ${KERNELDIR}/READY/i9300
+rm ${KERNELDIR}/READY/i9300/boot/zImage
+rm ${KERNELDIR}/READY/i9300/Kernel_*
 stat ${KERNELDIR}/boot.img
-cp ${KERNELDIR}/boot.img /${KERNELDIR}/READY/boot/
-cd ${KERNELDIR}/READY/
+cp ${KERNELDIR}/boot.img /${KERNELDIR}/READY/i9300/boot/
+cd ${KERNELDIR}/READY/i9300
         zip -r Kernel_${GETVER}-`date +"[%H-%M]-[%d-%m]-JB-SGSIII-PWR-CORE"`.zip .
 rm ${KERNELDIR}/boot.img
-rm ${KERNELDIR}/READY/boot/boot.img
-rm ${KERNELDIR}/READY/.config
+rm ${KERNELDIR}/READY/i9300/boot/boot.img
+rm ${KERNELDIR}/READY/i9300/.config
                 read -p "push kernel to ftp (y/n)?"
                 if [ "$REPLY" == "y" ]; then
 			echo "Uploading kernel to FTP server";
-			mv ${KERNELDIR}/READY/Kernel_* ${KERNELDIR}/SGSIII/
+			mv ${KERNELDIR}/READY/i9300/Kernel_* ${KERNELDIR}/SGSIII/
 			ncftpput -f /home/halaszk/login.cfg -V -R / ${KERNELDIR}/SGSIII/
 			rm ${KERNELDIR}/SGSIII/Kernel_*
 			echo "Uploading kernel to FTP server DONE";
@@ -175,20 +183,20 @@ rm ${KERNELDIR}/READY/.config
 else
         # copy all needed to ready kernel folder.
 cp ${KERNELDIR}/.config ${KERNELDIR}/arch/arm/configs/${KERNEL_CONFIG}
-cp ${KERNELDIR}/.config ${KERNELDIR}/READY/
-rm ${KERNELDIR}/READY/boot/zImage
-rm ${KERNELDIR}/READY/Kernel_*
+cp ${KERNELDIR}/.config ${KERNELDIR}/READY/note/
+rm ${KERNELDIR}/READY/note/boot/zImage
+rm ${KERNELDIR}/READY/note/Kernel_*
 stat ${KERNELDIR}/boot.img
-cp ${KERNELDIR}/boot.img /${KERNELDIR}/READY/boot/
-cd ${KERNELDIR}/READY/
+cp ${KERNELDIR}/boot.img /${KERNELDIR}/READY/note/boot/
+cd ${KERNELDIR}/READY/note/
         zip -r Kernel_${GETVER}-`date +"[%H-%M]-[%d-%m]-JB-N7100-PWR-CORE"`.zip .
 rm ${KERNELDIR}/boot.img
-rm ${KERNELDIR}/READY/boot/boot.img
-rm ${KERNELDIR}/READY/.config
+rm ${KERNELDIR}/READY/note/boot/boot.img
+rm ${KERNELDIR}/READY/note/.config
                 read -p "push kernel to ftp (y/n)?"
                 if [ "$REPLY" == "y" ]; then
                         echo "Uploading kernel to FTP server";
-                        mv ${KERNELDIR}/READY/Kernel_* ${KERNELDIR}/N7100/
+                        mv ${KERNELDIR}/READY/note/Kernel_* ${KERNELDIR}/N7100/
                         ncftpput -f /home/halaszk/login.cfg -V -R / ${KERNELDIR}/N7100/
                         rm ${KERNELDIR}/N7100/Kernel_*
                         echo "Uploading kernel to FTP server DONE";
